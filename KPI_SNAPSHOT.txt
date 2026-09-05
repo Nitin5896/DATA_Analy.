@@ -1,0 +1,12 @@
+PROJECT KPI SNAPSHOT
+Total Units: 556,431
+Total Defects: 19,362
+Defect Rate: 3.48%
+First Pass Yield: 96.52%
+Scrap Units: 13,862
+Rework Units: 5,500
+Downtime Hours: 6,087.56
+COPQ: ₹9,489,788.54
+
+Highest Defect Rate Line: Line D
+Top Root Cause by Defects: Assembly

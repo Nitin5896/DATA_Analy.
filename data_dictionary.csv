@@ -1,0 +1,20 @@
+Field,Definition,Example
+Record_ID,Unique production quality record ID,QR00001
+Date,Production date,2025-01-01
+Production_Line,Production line,Line A
+Product,Product manufactured,Device Alpha
+Shift,Production shift,Morning
+Operator_ID,Operator identifier,OP001
+Machine_ID,Machine identifier,M-101
+Units_Produced,Total units produced,200
+Defects,Units failing inspection,8
+Rework_Units,Defective units sent for rework,3
+Scrap_Units,Defective units scrapped,5
+Downtime_Hours,Unplanned/recorded downtime hours,2.4
+Root_Cause,Primary defect cause category,Assembly
+Cost_of_Poor_Quality,Estimated rework + scrap cost,5000
+Good_Units,Units passing first inspection,192
+Defect_Rate,Defects / units produced,0.04
+First_Pass_Yield,Good units / units produced,0.96
+Scrap_Rate,Scrap / units produced,0.025
+Rework_Rate,Rework / units produced,0.015
