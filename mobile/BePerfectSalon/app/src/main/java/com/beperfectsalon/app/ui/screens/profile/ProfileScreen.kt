@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +35,7 @@ fun ProfileScreen(
     onLoggedOut: () -> Unit,
     onOpenAbout: () -> Unit,
     onLoginRequired: () -> Unit,
+    onAccountDeleted: () -> Unit,
 ) {
     val loggedIn = viewModel.isLoggedIn()
 
@@ -56,6 +59,36 @@ fun ProfileScreen(
         LaunchedEffect(Unit) { viewModel.load() }
         val state by viewModel.uiState.collectAsState()
         val saveState by viewModel.saveState.collectAsState()
+        val deleteAccountState by viewModel.deleteAccountState.collectAsState()
+        var showDeleteConfirm by remember { mutableStateOf(false) }
+
+        LaunchedEffect(deleteAccountState) {
+            if (deleteAccountState is Resource.Success) {
+                viewModel.consumeDeleteAccountState()
+                onAccountDeleted()
+            }
+        }
+
+        if (showDeleteConfirm) {
+            AlertDialog(
+                onDismissRequest = { showDeleteConfirm = false },
+                title = { Text("Delete your account?") },
+                text = { Text("This permanently deletes your profile and all your bookings. This cannot be undone.") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showDeleteConfirm = false
+                            viewModel.deleteAccount()
+                        },
+                    ) {
+                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                },
+            )
+        }
 
         when (val current = state) {
             is Resource.Loading -> FullScreenLoading(modifier = Modifier.padding(padding))
@@ -99,6 +132,22 @@ fun ProfileScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text("Log Out")
+                    }
+
+                    val currentDeleteState = deleteAccountState
+                    if (currentDeleteState is Resource.Error) {
+                        Text(currentDeleteState.message, color = MaterialTheme.colorScheme.error)
+                    }
+
+                    TextButton(
+                        onClick = { showDeleteConfirm = true },
+                        enabled = currentDeleteState !is Resource.Loading,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            if (currentDeleteState is Resource.Loading) "Deleting account..." else "Delete My Account",
+                            color = MaterialTheme.colorScheme.error,
+                        )
                     }
                 }
             }

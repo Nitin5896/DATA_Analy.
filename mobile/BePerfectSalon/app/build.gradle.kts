@@ -1,9 +1,22 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
 }
+
+// Release signing comes from keystore.properties (repo root, git-ignored) so the keystore
+// path and passwords never touch source control. See DEPLOYMENT.md for how to create it.
+// A debug build (and CI checks that only need to compile) works with no keystore at all.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseSigningConfig = keystorePropertiesFile.exists()
 
 android {
     namespace = "com.beperfectsalon.app"
@@ -17,6 +30,17 @@ android {
         versionName = "1.0.0"
     }
 
+    signingConfigs {
+        if (hasReleaseSigningConfig) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -24,6 +48,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (hasReleaseSigningConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+            // Without keystore.properties, a release build still compiles (useful for CI/
+            // local verification) but is left unsigned - it cannot be uploaded to Play Console
+            // until you create the keystore. See DEPLOYMENT.md.
         }
     }
 
@@ -65,8 +95,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.messaging.ktx)
 
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.coroutines.play.services)

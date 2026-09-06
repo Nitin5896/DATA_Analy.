@@ -97,8 +97,8 @@ Admin SDK script) - edit the names/prices/descriptions to match the real salon f
 
 ## Deliberately out of scope for v1 (natural next steps)
 
-- Push notifications for booking reminders/confirmations (Firebase Cloud Messaging dependency
-  is already wired in `app/build.gradle.kts`; no notification-sending logic yet)
+- Push notifications for booking reminders/confirmations (not wired up yet - would add
+  `firebase-messaging-ktx` and a token-registration flow when this is prioritized)
 - An admin/staff app or web console (the salon owner currently manages services/stylists/
   offers/gallery directly in the Firebase Console, or a Cloud Function admin panel later)
 - Phone/OTP login (email/password only, to avoid the SHA-cert + Play Integrity setup that

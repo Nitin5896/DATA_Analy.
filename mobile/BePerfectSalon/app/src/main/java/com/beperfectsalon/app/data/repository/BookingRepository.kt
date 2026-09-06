@@ -44,5 +44,6 @@ class BookingRepository(
 
     suspend fun cancelBooking(bookingId: String): Result<Unit> = runCatching {
         bookings().document(bookingId).update("status", BookingStatus.CANCELLED.name).await()
+        Unit
     }
 }

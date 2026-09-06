@@ -6,6 +6,7 @@ import com.beperfectsalon.app.data.model.UserProfile
 import com.beperfectsalon.app.data.repository.AuthRepository
 import com.beperfectsalon.app.data.repository.RepositoryProvider
 import com.beperfectsalon.app.util.Resource
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,9 @@ class ProfileViewModel(
 
     private val _saveState = MutableStateFlow<Resource<Unit>?>(null)
     val saveState: StateFlow<Resource<Unit>?> = _saveState.asStateFlow()
+
+    private val _deleteAccountState = MutableStateFlow<Resource<Unit>?>(null)
+    val deleteAccountState: StateFlow<Resource<Unit>?> = _deleteAccountState.asStateFlow()
 
     fun isLoggedIn(): Boolean = authRepository.isLoggedIn()
 
@@ -52,4 +56,27 @@ class ProfileViewModel(
     }
 
     fun logout() = authRepository.logout()
+
+    fun deleteAccount() {
+        val user = authRepository.currentUser ?: return
+        _deleteAccountState.value = Resource.Loading
+        viewModelScope.launch {
+            val result = authRepository.deleteAccount(user.uid)
+            _deleteAccountState.value = result.fold(
+                onSuccess = { Resource.Success(Unit) },
+                onFailure = {
+                    val message = if (it is FirebaseAuthRecentLoginRequiredException) {
+                        "For your security, please log out and log back in before deleting your account."
+                    } else {
+                        it.message ?: "Could not delete your account. Please try again."
+                    }
+                    Resource.Error(message)
+                },
+            )
+        }
+    }
+
+    fun consumeDeleteAccountState() {
+        _deleteAccountState.value = null
+    }
 }

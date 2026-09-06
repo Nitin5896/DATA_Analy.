@@ -151,7 +151,12 @@ private fun MainScaffold(
                 OffersScreen()
             }
             composable(Screen.Profile.route) {
-                ProfileScreen(onLoggedOut = onLoggedOut, onOpenAbout = onOpenAbout, onLoginRequired = onLoginRequired)
+                ProfileScreen(
+                    onLoggedOut = onLoggedOut,
+                    onOpenAbout = onOpenAbout,
+                    onLoginRequired = onLoginRequired,
+                    onAccountDeleted = onLoggedOut,
+                )
             }
         }
     }
