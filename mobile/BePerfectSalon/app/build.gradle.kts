@@ -63,6 +63,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        // Material3 APIs like TopAppBar/Scaffold/ExposedDropdownMenuBox are marked
+        // @ExperimentalMaterial3Api - used all over this app's screens, so opting in
+        // module-wide is far more maintainable than annotating every composable.
+        freeCompilerArgs += listOf(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+        )
     }
 
     buildFeatures {
