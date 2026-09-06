@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.beperfectsalon.app.ui.components.ErrorMessage
 import com.beperfectsalon.app.ui.components.FullScreenLoading
 import com.beperfectsalon.app.util.Resource
