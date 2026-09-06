@@ -1,0 +1,31 @@
+{
+  "_comment": "Import these documents into Firestore (console: each top-level key is a collection; each entry inside is one document, with an auto-generated ID unless you set one manually). Meant as a starting menu you edit to match the real salon.",
+
+  "services": [
+    { "name": "Haircut - Men", "category": "Hair", "description": "Precision haircut with styling.", "price": 250, "durationMinutes": 30, "popular": true, "active": true, "imageUrl": "" },
+    { "name": "Haircut - Women", "category": "Hair", "description": "Consultation, cut and blow-dry.", "price": 500, "durationMinutes": 45, "popular": true, "active": true, "imageUrl": "" },
+    { "name": "Hair Color - Global", "category": "Hair", "description": "Full head permanent color application.", "price": 1800, "durationMinutes": 90, "popular": true, "active": true, "imageUrl": "" },
+    { "name": "Hair Spa", "category": "Hair", "description": "Deep conditioning treatment and scalp massage.", "price": 900, "durationMinutes": 60, "popular": false, "active": true, "imageUrl": "" },
+    { "name": "Beard Trim & Shape", "category": "Men's Grooming", "description": "Beard shaping with hot towel finish.", "price": 150, "durationMinutes": 20, "popular": true, "active": true, "imageUrl": "" },
+    { "name": "Classic Facial", "category": "Skin", "description": "Cleanse, exfoliate and hydrate.", "price": 700, "durationMinutes": 45, "popular": false, "active": true, "imageUrl": "" },
+    { "name": "Gold Facial", "category": "Skin", "description": "Brightening facial with gold-infused products.", "price": 1500, "durationMinutes": 60, "popular": false, "active": true, "imageUrl": "" },
+    { "name": "Manicure", "category": "Nails", "description": "Nail shaping, cuticle care and polish.", "price": 350, "durationMinutes": 30, "popular": false, "active": true, "imageUrl": "" },
+    { "name": "Pedicure", "category": "Nails", "description": "Foot soak, scrub, and polish.", "price": 450, "durationMinutes": 40, "popular": false, "active": true, "imageUrl": "" },
+    { "name": "Bridal Makeup", "category": "Bridal", "description": "Full bridal look with trial session included.", "price": 8000, "durationMinutes": 120, "popular": false, "active": true, "imageUrl": "" }
+  ],
+
+  "stylists": [
+    { "name": "Aarav Mehta", "specialization": "Hair & Color Specialist", "experienceYears": 8, "active": true, "imageUrl": "" },
+    { "name": "Priya Nair", "specialization": "Skin & Facial Specialist", "experienceYears": 5, "active": true, "imageUrl": "" },
+    { "name": "Rohan Das", "specialization": "Men's Grooming", "experienceYears": 6, "active": true, "imageUrl": "" }
+  ],
+
+  "offers": [
+    { "title": "New Customer Special", "description": "20% off your first visit on any hair service.", "discountPercent": 20, "validTill": "2026-12-31", "active": true, "imageUrl": "" },
+    { "title": "Weekday Facial Offer", "description": "15% off all facials, Monday to Thursday.", "discountPercent": 15, "validTill": "2026-12-31", "active": true, "imageUrl": "" }
+  ],
+
+  "gallery": [
+    { "caption": "Salon interior", "category": "Interior", "imageUrl": "https://images.example.com/salon-interior.jpg" }
+  ]
+}

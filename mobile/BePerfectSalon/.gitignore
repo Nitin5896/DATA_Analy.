@@ -1,0 +1,18 @@
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Firebase config is per-developer/per-environment - never commit the real one.
+app/google-services.json
+
+# Release signing - the keystore and its passwords must never reach source control.
+keystore.properties
+*.jks
+*.keystore

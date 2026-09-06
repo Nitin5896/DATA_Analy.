@@ -1,0 +1,81 @@
+name: Android build verification
+
+# Verifies the Be Perfect Unisex Salon app actually compiles. This exists because the app
+# was written in a sandbox with no network access to Google's SDK servers, so it could not
+# be built there - GitHub's runners have normal internet access and can do the real check.
+#
+# The google-services.json written below is a throwaway placeholder (fake project id/keys)
+# used only so the google-services Gradle plugin has a file to read; it is never committed
+# and talks to no real Firebase project. It does not replace the real one you add locally
+# per mobile/BePerfectSalon/README.md.
+
+on:
+  push:
+    paths:
+      - "mobile/BePerfectSalon/**"
+      - ".github/workflows/android-build.yml"
+  pull_request:
+    paths:
+      - "mobile/BePerfectSalon/**"
+      - ".github/workflows/android-build.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile/BePerfectSalon
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Write placeholder google-services.json (CI-only, not a real project)
+        run: |
+          cat > app/google-services.json <<'JSON'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "ci-placeholder-project",
+              "storage_bucket": "ci-placeholder-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": { "package_name": "com.beperfectsalon.app" }
+                },
+                "oauth_client": [],
+                "api_key": [{ "current_key": "ci-placeholder-key" }],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          JSON
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build debug APK and run lint
+        run: ./gradlew :app:assembleDebug :app:lintDebug --stacktrace
+
+      - name: Upload debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: mobile/BePerfectSalon/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: mobile/BePerfectSalon/app/build/reports/lint-results-debug.html
+          if-no-files-found: ignore
