@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Be Perfect Unisex Salon</string>
+    <string name="salon_tagline">Look Sharp. Feel Perfect.</string>
+    <string name="salon_phone">+91 90000 00000</string>
+    <string name="salon_address">Shop No. 12, Main Market Road, Your City, India</string>
+    <string name="salon_hours">Mon–Sun: 10:00 AM – 8:00 PM</string>
+</resources>

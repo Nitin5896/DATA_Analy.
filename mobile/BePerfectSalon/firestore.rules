@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// Security model:
+// - services / stylists / gallery / offers: public read (menu browsing needs no login),
+//   writes only from the Firebase console or a trusted admin tool (never from the app).
+// - users/{uid}: a user can only read/write their own profile document.
+// - bookings/{id}: a user can create bookings for themselves and read/cancel only their own;
+//   nobody can edit another user's booking, and nobody can delete a booking outright
+//   (cancellation is a status update, kept for audit history).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /stylists/{stylistId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /gallery/{itemId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /offers/{offerId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow update: if request.auth != null
+        && request.auth.uid == resource.data.userId
+        && request.resource.data.userId == resource.data.userId
+        // customers may only ever change the status field (e.g. to CANCELLED) from the app;
+        // everything else about a booking is fixed once created.
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+      allow delete: if false;
+    }
+  }
+}

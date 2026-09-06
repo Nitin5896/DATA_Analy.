@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder emblem (ring + dot). Replace with a designed logo via Android Studio's
+     Image Asset tool (right-click res > New > Image Asset) once branding is finalized. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#D4AF6A"
+        android:fillType="evenOdd"
+        android:pathData="M54,28 A26,26 0 1 1 53.99,28 Z M54,36 A18,18 0 1 1 53.99,36 Z" />
+    <path
+        android:fillColor="#D4AF6A"
+        android:pathData="M54,48 A6,6 0 1 1 53.99,48 Z" />
+</vector>

@@ -1,0 +1,7 @@
+<resources>
+    <!-- Base application theme used only for the window before Compose takes over. -->
+    <style name="Theme.BePerfectSalon" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/salon_primary</item>
+        <item name="android:windowBackground">@color/salon_background</item>
+    </style>
+</resources>
